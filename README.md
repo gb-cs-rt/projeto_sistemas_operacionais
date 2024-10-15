@@ -1,1 +1,1 @@
-# projeto_SO
+# projeto_sistemas_operacionais
