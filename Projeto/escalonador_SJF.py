@@ -32,7 +32,10 @@ class EscalonadorSJF:
         # Se a CPU está vazia e há processos na fila de espera
         if self.cpu is None and self.fila_espera:
             # Seleciona o processo de menor duração que não seja o que acabou de sair para I/O
-            menor_duracao = min(processo.duracao for processo in self.fila_espera if processo != self.processo_em_io)  # Ignorar o processo que acabou de sair para I/O)
+            if len(self.fila_espera) == 1:
+                menor_duracao = self.fila_espera[0].duracao
+            else:
+                menor_duracao = min(processo.duracao for processo in self.fila_espera if processo != self.processo_em_io)  # Ignorar o processo que acabou de sair para I/O)
             for processo in self.fila_espera[:]:
                 if processo.duracao == menor_duracao and processo != self.processo_em_io:
                     self.cpu = processo
@@ -117,7 +120,7 @@ class EscalonadorSJF:
         print(f'CPU: {self.cpu.pid} ({self.cpu.duracao})')
         self.chegada_Processo()
         self.escalonar_Processo()
-        while self.cpu or self.fila_espera or self.fila_processos:
+        while self.cpu or self.fila_espera:
             self.tempo_atual += 1
             print(f'************ TEMPO {self.tempo_atual} **************')
             self.historico_execucao.append(self.cpu.pid if self.cpu else 'LIVRE')
