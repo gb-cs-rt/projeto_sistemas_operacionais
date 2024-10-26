@@ -1,0 +1,31 @@
+***********************************
+***** ESCALONADOR PRIORIDADE *****
+-----------------------------------
+------- INICIANDO SIMULACAO -------
+-----------------------------------
+************ TEMPO 0 **************
+FILA: Nao ha processos na fila
+CPU: P4 (3)
+************ TEMPO 1 **************
+FILA: Nao ha processos na fila
+CPU: P4 (2)
+************ TEMPO 2 **************
+FILA: Nao ha processos na fila
+CPU: P4 (1)
+************ TEMPO 3 **************
+#[evento] ENCERRANDO <P4>
+FILA: Nao ha processos na fila
+ACABARAM OS PROCESSOS!!!
+-----------------------------------
+------- SIMULACAO FINALIZADA ------
+-----------------------------------
+***********************************
+TEMPO DE ESPERA DE CADA PROCESSO:
+P1: 0
+P2: 0
+P3: 0
+P4: 0
+***********************************
+TEMPO TOTAL DE ESPERA: 0
+MEDIA DE TEMPO DE ESPERA: 0.00
+***********************************

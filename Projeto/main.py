@@ -1,6 +1,6 @@
 from escalonador_FCFS import EscalonadorFCFS, Processo
 from escalonador_SJF import EscalonadorSJF, Processo
-from escalonador_PRIORIDADE import EscalonadorPrioridade, Processo
+from escalonador_PRIORIDADE import EscalonadorPrioridade, ProcessoPrioridade
 from escalonador_RR import EscalonadorRR, Processo
 
 def main():
@@ -52,7 +52,7 @@ def main():
                 duracao = int(partes[2])
                 prioridade = int(partes[3])
                 io = list(map(int, partes[4].split(',')) if len(partes) > 4 else [])
-                processo = Processo(pid, chegada, duracao, prioridade, io)
+                processo = ProcessoPrioridade(pid, chegada, duracao, prioridade, io)
                 escalonador.adicionar_Processo(processo)
             escalonador.executarPrioridade()
             arq.close()

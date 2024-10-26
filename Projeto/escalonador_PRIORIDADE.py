@@ -5,7 +5,7 @@ arq = open('saida.txt', 'w')
 # SJF é um escalonador com prioridade
 # • a prioridade é a previsão da próxima CPU burst
 
-class Processo:
+class ProcessoPrioridade:
 
     def __init__(self, pid, chegada, duracao, prioridade, io=[]):
         self.pid = pid
@@ -74,6 +74,7 @@ class EscalonadorPrioridade:
                     self.chegada_Processo()
                     self.fila_espera.append(self.cpu)
                 self.cpu = None
+                self.escalonar_Processo()
 
     def encerrar_Processo(self):
         if self.cpu is not None and self.cpu.duracao == 0:
@@ -137,4 +138,21 @@ class EscalonadorPrioridade:
         arq.write('-----------------------------------\n')
         arq.write(f'************ TEMPO {self.tempo_atual} **************\n')
         arq.write('FILA: Nao ha processos na fila\n')
-        arq.write(f'CPU: {self.cpu.pid if self.cpu else "LIVRE"} ({self.cpu.duracao if self.cpu else "-"})\n')
+        arq.write(f'CPU: {self.cpu.pid} ({self.cpu.duracao})\n')
+        self.chegada_Processo()
+        self.escalonar_Processo()
+        while self.cpu or self.fila_espera:
+            self.tempo_atual += 1
+            arq.write(f'************ TEMPO {self.tempo_atual} **************\n')
+            self.historico_execucao.append(self.cpu.pid if self.cpu else 'LIVRE')
+            self.incrementar_Tempo_Decorrido()
+            self.decrementar_Duracao()
+            self.verifica_IO()
+            self.encerrar_Processo()
+            self.chegada_Processo()
+            self.escalonar_Processo()
+            self.print_Status()
+        arq.write('-----------------------------------\n')
+        arq.write('------- SIMULACAO FINALIZADA ------\n')
+        arq.write('-----------------------------------\n')
+        self.gerar_diagrama_gantt()

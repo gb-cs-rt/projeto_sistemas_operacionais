@@ -68,6 +68,7 @@ class EscalonadorSJF:
                     self.fila_espera.append(self.cpu)
                     self.processo_em_io = self.cpu  # Marca o processo que acabou de sair
                 self.cpu = None  # Libera a CPU
+                self.escalonar_Processo()
 
     def encerrar_Processo(self):
         if self.cpu is not None and self.cpu.duracao == 0:
