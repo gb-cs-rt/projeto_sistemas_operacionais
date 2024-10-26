@@ -29,12 +29,20 @@ class EscalonadorPrioridade:
         self.todos_processos = []
         self.historico_execucao = []
 
+    def verifica_Prioridade(self):
+        maior_prioridade = min(processo.prioridade for processo in self.fila_espera)
+        for processo in self.fila_espera[:]:
+            if processo.prioridade == maior_prioridade:
+                self.cpu = processo
+                self.cpu.tempo_espera_total += self.tempo_atual - self.cpu.tempo_entrada_fila
+                self.fila_espera.remove(processo)
+                break
+
     def adicionar_Processo(self, processo):
-        if processo.chegada == 0:
-            self.cpu = processo
-        else:
-            self.fila_processos.append(processo)
+        self.fila_processos.append(processo)
         self.todos_processos.append(processo)
+        # self.escalonar_Processo()
+        # self.verifica_Prioridade()
 
     # • A CPU é alocada para o processo com maior prioridade
     # SJF é um escalonador com prioridade
@@ -44,13 +52,7 @@ class EscalonadorPrioridade:
 
     def escalonar_Processo(self):
         if self.cpu is None and self.fila_espera:
-            maior_prioridade = min(processo.prioridade for processo in self.fila_espera)
-            for processo in self.fila_espera[:]:
-                if processo.prioridade == maior_prioridade:
-                    self.cpu = processo
-                    self.cpu.tempo_espera_total += self.tempo_atual - self.cpu.tempo_entrada_fila
-                    self.fila_espera.remove(processo)
-                    break
+            self.verifica_Prioridade()
 
     def chegada_Processo(self):
         for processo in self.fila_processos[:]:
@@ -138,9 +140,9 @@ class EscalonadorPrioridade:
         arq.write('-----------------------------------\n')
         arq.write(f'************ TEMPO {self.tempo_atual} **************\n')
         arq.write('FILA: Nao ha processos na fila\n')
-        arq.write(f'CPU: {self.cpu.pid} ({self.cpu.duracao})\n')
         self.chegada_Processo()
         self.escalonar_Processo()
+        arq.write(f'CPU: {self.cpu.pid} ({self.cpu.duracao})\n')
         while self.cpu or self.fila_espera:
             self.tempo_atual += 1
             arq.write(f'************ TEMPO {self.tempo_atual} **************\n')
