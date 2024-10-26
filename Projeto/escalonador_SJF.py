@@ -47,7 +47,7 @@ class EscalonadorSJF:
     def chegada_Processo(self):
         for processo in self.fila_processos[:]:
             if processo.chegada == self.tempo_atual:
-                print(f'#[evento] CHEGADA <{processo.pid}>')
+                arq.write(f'#[evento] CHEGADA <{processo.pid}>\n')
                 processo.tempo_entrada_fila = self.tempo_atual
                 self.fila_espera.append(processo)
 
@@ -62,7 +62,7 @@ class EscalonadorSJF:
     def verifica_IO(self):
         if self.cpu is not None:
             if self.cpu.tempo_decorrido in self.cpu.io:
-                print(f'#[evento] OPERACAO I/O <{self.cpu.pid}>')
+                arq.write(f'#[evento] OPERACAO I/O <{self.cpu.pid}>\n')
                 if self.cpu.duracao > 0:  # Se o processo ainda não terminou
                     self.cpu.tempo_entrada_fila = self.tempo_atual
                     self.fila_espera.append(self.cpu)
@@ -72,35 +72,45 @@ class EscalonadorSJF:
 
     def encerrar_Processo(self):
         if self.cpu is not None and self.cpu.duracao == 0:
-            print(f'#[evento] ENCERRANDO <{self.cpu.pid}>')
+            arq.write(f'#[evento] ENCERRANDO <{self.cpu.pid}>\n')
             self.cpu = None
 
     def calcula_Tempo_Espera(self, arquivo_saida=None):
-        print('***********************************')
-        print('TEMPO DE ESPERA DE CADA PROCESSO:')
+        arq.write('***********************************\n')
+        arq.write('TEMPO DE ESPERA DE CADA PROCESSO:\n')
+
         for processo in self.todos_processos:
             tempo_espera = processo.tempo_espera_total
-            print(f'{processo.pid}: {tempo_espera}')
+            arq.write(f'{processo.pid}: {tempo_espera}\n')
             if arquivo_saida:
                 arquivo_saida.write(f'{processo.pid}: {tempo_espera}\n')
 
         total_tempo_espera = sum(processo.tempo_espera_total for processo in self.todos_processos)
-        media_tempo_espera = total_tempo_espera / len(self.todos_processos) if self.todos_processos else 0
-        print('***********************************')
-        print(f'TEMPO TOTAL DE ESPERA: {total_tempo_espera}')
-        print(f'MEDIA DE TEMPO DE ESPERA: {media_tempo_espera:.2f}')
-        print('***********************************')
+        if len(self.todos_processos) > 0:
+            media_tempo_espera = total_tempo_espera / len(self.todos_processos)
+        else:
+            media_tempo_espera = 0
+        arq.write('***********************************\n')
+        arq.write(f'TEMPO TOTAL DE ESPERA: {total_tempo_espera}\n')
+        arq.write(f'MEDIA DE TEMPO DE ESPERA: {media_tempo_espera:.2f}\n')
+        arq.write('***********************************\n')
+
+        if arquivo_saida:
+            arquivo_saida.write('***********************************\n')
+            arquivo_saida.write(f'TEMPO TOTAL DE ESPERA: {total_tempo_espera}\n')
+            arquivo_saida.write(f'MEDIA DE TEMPO DE ESPERA: {media_tempo_espera:.2f}\n')
+            arquivo_saida.write('***********************************\n')
 
     def print_Status(self):
         if not self.fila_espera and not self.cpu:
-            print('FILA: Nao ha processos na fila')
-            print('ACABARAM OS PROCESSOS!!!')
+            arq.write('FILA: Nao ha processos na fila\n')
+            arq.write('ACABARAM OS PROCESSOS!!!\n')
         elif not self.fila_espera:
-            print('FILA: Nao ha processos na fila')
-            print(f'CPU: {self.cpu.pid} ({self.cpu.duracao})')
+            arq.write('FILA: Nao ha processos na fila\n')
+            arq.write(f'CPU: {self.cpu.pid} ({self.cpu.duracao})\n')
         else:
-            print('FILA:', ' '.join(f'{processo.pid} ({processo.duracao})' for processo in self.fila_espera))
-            print(f'CPU: {self.cpu.pid if self.cpu else "LIVRE"} ({self.cpu.duracao if self.cpu else "-"})')
+            arq.write('FILA: ' + ' '.join(f'{processo.pid} ({processo.duracao})' for processo in self.fila_espera) + '\n')
+            arq.write(f'CPU: {self.cpu.pid if self.cpu else "LIVRE"} ({self.cpu.duracao if self.cpu else "-"})\n')
 
     def gerar_diagrama_gantt(self):
         with open('grafico.txt', 'w') as arquivo_grafico:
@@ -111,19 +121,19 @@ class EscalonadorSJF:
             self.calcula_Tempo_Espera(arquivo_grafico)
 
     def executarSJF(self):
-        print('***********************************')
-        print('***** SHORTEST JOB FIRST *****')
-        print('-----------------------------------')
-        print('------- INICIANDO SIMULACAO -------')
-        print('-----------------------------------')
-        print(f'************ TEMPO {self.tempo_atual} **************')
-        print('FILA: Nao ha processos na fila')
-        print(f'CPU: {self.cpu.pid} ({self.cpu.duracao})')
+        arq.write('***********************************\n')
+        arq.write('***** SHORTEST JOB FIRST *****\n')
+        arq.write('-----------------------------------\n')
+        arq.write('------- INICIANDO SIMULACAO -------\n')
+        arq.write('-----------------------------------\n')
+        arq.write(f'************ TEMPO {self.tempo_atual} **************\n')
+        arq.write('FILA: Nao ha processos na fila\n')
+        arq.write(f'CPU: {self.cpu.pid} ({self.cpu.duracao})\n')
         self.chegada_Processo()
         self.escalonar_Processo()
         while self.cpu or self.fila_espera:
             self.tempo_atual += 1
-            print(f'************ TEMPO {self.tempo_atual} **************')
+            arq.write(f'************ TEMPO {self.tempo_atual} **************\n')
             self.historico_execucao.append(self.cpu.pid if self.cpu else 'LIVRE')
             self.incrementar_Tempo_Decorrido()
             self.decrementar_Duracao()
@@ -132,7 +142,7 @@ class EscalonadorSJF:
             self.chegada_Processo()
             self.escalonar_Processo()
             self.print_Status()
-        print('-----------------------------------')
-        print('------- SIMULACAO FINALIZADA ------')
-        print('-----------------------------------')
+        arq.write('-----------------------------------\n')
+        arq.write('------- SIMULACAO FINALIZADA ------\n')
+        arq.write('-----------------------------------\n')
         self.gerar_diagrama_gantt()

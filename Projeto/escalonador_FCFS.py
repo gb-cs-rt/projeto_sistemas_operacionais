@@ -68,7 +68,7 @@ class EscalonadorFCFS:
             arq.write(f'#[evento] ENCERRANDO <{self.cpu.pid}>\n')
             self.cpu = None
 
-    def calcula_Tempo_Espera_(self, arquivo_saida=None):
+    def calcula_Tempo_Espera(self, arquivo_saida=None):
         arq.write('***********************************\n')
         arq.write('TEMPO DE ESPERA DE CADA PROCESSO:\n')
 
@@ -112,7 +112,7 @@ class EscalonadorFCFS:
             arquivo_grafico.write('| ' + ' | '.join(self.historico_execucao) + ' |\n')
             arquivo_grafico.write('-' * (len(self.historico_execucao) * 5) + '\n')
 
-            self.calcula_Tempo_Espera_(arquivo_grafico)
+            self.calcula_Tempo_Espera(arquivo_grafico)
 
     def executarFCFS(self):
         arq.write('***********************************\n')
