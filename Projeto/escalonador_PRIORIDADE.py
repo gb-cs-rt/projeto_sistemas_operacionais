@@ -41,14 +41,6 @@ class EscalonadorPrioridade:
     def adicionar_Processo(self, processo):
         self.fila_processos.append(processo)
         self.todos_processos.append(processo)
-        # self.escalonar_Processo()
-        # self.verifica_Prioridade()
-
-    # • A CPU é alocada para o processo com maior prioridade
-    # SJF é um escalonador com prioridade
-    # • a prioridade é a previsão da próxima CPU burst
-    # Verificar a chegada de processos e sua prioridade antes de escalonar
-
 
     def escalonar_Processo(self):
         if self.cpu is None and self.fila_espera:

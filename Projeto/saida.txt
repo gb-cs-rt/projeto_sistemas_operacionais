@@ -1,10 +1,11 @@
 ***********************************
-***** SHORTEST JOB FIRST *****
+***** FIRST COME FIRST SERVED *****
 -----------------------------------
 ------- INICIANDO SIMULACAO -------
 -----------------------------------
 ************ TEMPO 0 **************
 FILA: Nao ha processos na fila
+#[evento] CHEGADA <P1>
 CPU: P1 (6)
 ************ TEMPO 1 **************
 #[evento] CHEGADA <P2>
@@ -44,23 +45,23 @@ FILA: P3 (5) P4 (4)
 CPU: P2 (1)
 ************ TEMPO 11 **************
 #[evento] ENCERRANDO <P2>
-FILA: P3 (5)
-CPU: P4 (4)
-************ TEMPO 12 **************
-FILA: P3 (5)
-CPU: P4 (3)
-************ TEMPO 13 **************
-FILA: P3 (5)
-CPU: P4 (2)
-************ TEMPO 14 **************
-FILA: P3 (5)
-CPU: P4 (1)
-************ TEMPO 15 **************
-#[evento] ENCERRANDO <P4>
-FILA: Nao ha processos na fila
+FILA: P4 (4)
 CPU: P3 (5)
-************ TEMPO 16 **************
+************ TEMPO 12 **************
 #[evento] OPERACAO I/O <P3>
+FILA: P3 (4)
+CPU: P4 (4)
+************ TEMPO 13 **************
+FILA: P3 (4)
+CPU: P4 (3)
+************ TEMPO 14 **************
+FILA: P3 (4)
+CPU: P4 (2)
+************ TEMPO 15 **************
+FILA: P3 (4)
+CPU: P4 (1)
+************ TEMPO 16 **************
+#[evento] ENCERRANDO <P4>
 FILA: Nao ha processos na fila
 CPU: P3 (4)
 ************ TEMPO 17 **************
@@ -84,8 +85,8 @@ TEMPO DE ESPERA DE CADA PROCESSO:
 P1: 1
 P2: 5
 P3: 10
-P4: 1
+P4: 2
 ***********************************
-TEMPO TOTAL DE ESPERA: 17
-MEDIA DE TEMPO DE ESPERA: 4.25
+TEMPO TOTAL DE ESPERA: 18
+MEDIA DE TEMPO DE ESPERA: 4.50
 ***********************************

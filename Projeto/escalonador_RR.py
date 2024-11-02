@@ -26,10 +26,7 @@ class EscalonadorRR:
         self.historico_execucao = []
 
     def adicionar_Processo(self, processo):
-        if processo.chegada == 0:
-            self.cpu = processo
-        else:
-            self.fila_processos.append(processo)
+        self.fila_processos.append(processo)
         self.todos_processos.append(processo)
 
     def escalonar_Processo(self):
@@ -60,7 +57,7 @@ class EscalonadorRR:
                 arq.write(f'#[evento] OPERACAO I/O <{self.cpu.pid}>\n')
                 if self.cpu.duracao > 0:  # Só coloca na fila se o processo não tiver terminado
                     self.cpu.tempo_entrada_fila = self.tempo_atual
-                    self.chegada_Processo()
+                    #self.chegada_Processo()
                     self.fila_espera.append(self.cpu)
                 self.cpu = None
 
@@ -135,9 +132,9 @@ class EscalonadorRR:
         arq.write('-----------------------------------\n')
         arq.write(f'************ TEMPO {self.tempo_atual} **************\n')
         arq.write('FILA: Nao ha processos na fila\n')
-        arq.write(f'CPU: {self.cpu.pid} ({self.cpu.duracao})\n')
         self.chegada_Processo()
         self.escalonar_Processo()
+        arq.write(f'CPU: {self.cpu.pid} ({self.cpu.duracao})\n')
         while self.cpu or self.fila_espera:
             self.tempo_atual += 1
             self.quantum_atual += 1

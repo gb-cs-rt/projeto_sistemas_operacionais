@@ -22,10 +22,7 @@ class EscalonadorSJF:
         self.processo_em_io = None  # Guardar o processo que saiu para I/O
 
     def adicionar_Processo(self, processo):
-        if processo.chegada == 0:
-            self.cpu = processo
-        else:
-            self.fila_processos.append(processo)
+        self.fila_processos.append(processo)
         self.todos_processos.append(processo)
 
     def escalonar_Processo(self):
@@ -128,9 +125,9 @@ class EscalonadorSJF:
         arq.write('-----------------------------------\n')
         arq.write(f'************ TEMPO {self.tempo_atual} **************\n')
         arq.write('FILA: Nao ha processos na fila\n')
-        arq.write(f'CPU: {self.cpu.pid} ({self.cpu.duracao})\n')
         self.chegada_Processo()
         self.escalonar_Processo()
+        arq.write(f'CPU: {self.cpu.pid} ({self.cpu.duracao})\n')
         while self.cpu or self.fila_espera:
             self.tempo_atual += 1
             arq.write(f'************ TEMPO {self.tempo_atual} **************\n')
