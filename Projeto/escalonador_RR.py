@@ -47,10 +47,12 @@ class EscalonadorRR:
                 self.fila_espera.append(processo)
                 
     def incrementar_Tempo_Decorrido(self):
-        self.cpu.tempo_decorrido += 1
+        if self.cpu is not None:
+            self.cpu.tempo_decorrido += 1
 
     def decrementar_Duracao(self):
-        self.cpu.duracao -= 1
+        if self.cpu is not None:
+            self.cpu.duracao -= 1
 
     def verifica_IO(self):
         if self.cpu is not None:
@@ -65,6 +67,7 @@ class EscalonadorRR:
     def encerrar_Processo(self):
         if self.cpu is not None and self.cpu.duracao == 0:
             arq.write(f'#[evento] ENCERRANDO <{self.cpu.pid}>\n')
+            self.fila_processos.remove(self.cpu)
             self.cpu = None
 
     def verifica_Quantum(self):
@@ -75,6 +78,9 @@ class EscalonadorRR:
                     self.cpu.tempo_entrada_fila = self.tempo_atual
                     # self.chegada_Processo()
                     self.fila_espera.append(self.cpu)
+                elif self.cpu.duracao == 0:
+                    self.encerrar_Processo()
+
                 self.cpu = None
                 self.quantum_atual = 0
 
@@ -105,16 +111,15 @@ class EscalonadorRR:
             arquivo_saida.write('***********************************\n')
 
     def print_Status(self):
-        if not self.fila_espera and not self.cpu:
+        if not self.fila_espera and not self.cpu and not self.fila_processos:
             arq.write('FILA: Nao ha processos na fila\n')
             arq.write('ACABARAM OS PROCESSOS!!!\n')
         elif not self.fila_espera:
             arq.write('FILA: Nao ha processos na fila\n')
-            arq.write(f'CPU: {self.cpu.pid} ({self.cpu.duracao})\n')
+            arq.write(f'CPU: {self.cpu.pid if self.cpu else "LIVRE"} ({self.cpu.duracao if self.cpu else "-"})\n')
         else:
             arq.write('FILA: ' + ' '.join(f'{processo.pid} ({processo.duracao})' for processo in self.fila_espera) + '\n')
             arq.write(f'CPU: {self.cpu.pid if self.cpu else "LIVRE"} ({self.cpu.duracao if self.cpu else "-"})\n')
-
 
     def gerar_diagrama_gantt(self):
         with open('grafico.txt', 'w') as arquivo_grafico:
@@ -136,7 +141,7 @@ class EscalonadorRR:
         self.chegada_Processo()
         self.escalonar_Processo()
         arq.write(f'CPU: {self.cpu.pid} ({self.cpu.duracao})\n')
-        while self.cpu or self.fila_espera:
+        while self.cpu or self.fila_espera or self.fila_processos:
             self.tempo_atual += 1
             self.quantum_atual += 1
             arq.write(f'************ TEMPO {self.tempo_atual} **************\n')
