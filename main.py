@@ -3,7 +3,13 @@ from escalonador_SJF import EscalonadorSJF
 from escalonador_PRIORIDADE import EscalonadorPrioridade
 from escalonador_RR import EscalonadorRR
 from utils import Processo, ProcessoPrioridade
-import os, time
+import os, time, sys
+
+def clear():
+    if sys.platform == 'linux':
+        os.system('clear')
+    else:
+        os.system('cls')
 
 def main():
 
@@ -66,20 +72,20 @@ def main():
             arq.close()
 
             try:
-                os.system('clear')
+                clear()
                 escalonador.executar()
             except Exception as e:
                 print(f'Erro ao simular: {e}\n')
 
         except Exception as e:
-            os.system('clear')
+            clear()
             print(f'Erro ao iniciar: {e}\n')
 
         time.sleep(1)
 
 if __name__ == '__main__':
     try:
-        os.system('clear')
+        clear()
         main()
     except:
         pass
