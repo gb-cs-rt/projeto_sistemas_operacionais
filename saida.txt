@@ -1,80 +1,86 @@
 ***********************************
-***** FIRST COME FIRST SERVED *****
+***** ESCALONADOR PRIORIDADE *****
 -----------------------------------
 ------- INICIANDO SIMULACAO -------
 -----------------------------------
 ************ TEMPO 0 **************
 FILA: Nao ha processos na fila
 #[evento] CHEGADA <P1>
-CPU: P1 (6)
-************ TEMPO 1 **************
 #[evento] CHEGADA <P2>
-FILA: P2 (5)
-CPU: P1 (5)
-************ TEMPO 2 **************
-#[evento] OPERACAO I/O <P1>
-FILA: P1 (4)
-CPU: P2 (5)
-************ TEMPO 3 **************
-#[evento] OPERACAO I/O <P2>
-FILA: P2 (4)
-CPU: P1 (4)
-************ TEMPO 4 **************
-FILA: P2 (4)
-CPU: P1 (3)
-************ TEMPO 5 **************
 #[evento] CHEGADA <P3>
-FILA: P2 (4) P3 (5)
-CPU: P1 (2)
-************ TEMPO 6 **************
-FILA: P2 (4) P3 (5)
-CPU: P1 (1)
-************ TEMPO 7 **************
-#[evento] ENCERRANDO <P1>
-FILA: P3 (5)
-CPU: P2 (4)
-************ TEMPO 8 **************
-FILA: P3 (5)
-CPU: P2 (3)
-************ TEMPO 9 **************
-FILA: P3 (5)
-CPU: P2 (2)
-************ TEMPO 10 **************
 #[evento] CHEGADA <P4>
-FILA: P3 (5) P4 (4)
-CPU: P2 (1)
-************ TEMPO 11 **************
-#[evento] ENCERRANDO <P2>
-FILA: P4 (4)
-CPU: P3 (5)
-************ TEMPO 12 **************
-#[evento] OPERACAO I/O <P3>
-FILA: P3 (4)
-CPU: P4 (4)
-************ TEMPO 13 **************
-FILA: P3 (4)
 CPU: P4 (3)
-************ TEMPO 14 **************
-FILA: P3 (4)
+************ TEMPO 1 **************
+FILA: P1 (8) P2 (5) P3 (7)
 CPU: P4 (2)
-************ TEMPO 15 **************
-FILA: P3 (4)
+************ TEMPO 2 **************
+FILA: P1 (8) P2 (5) P3 (7)
 CPU: P4 (1)
-************ TEMPO 16 **************
+************ TEMPO 3 **************
 #[evento] ENCERRANDO <P4>
-FILA: Nao ha processos na fila
+FILA: P1 (8) P2 (5)
+CPU: P3 (7)
+************ TEMPO 4 **************
+FILA: P1 (8) P2 (5)
+CPU: P3 (6)
+************ TEMPO 5 **************
+FILA: P1 (8) P2 (5)
+CPU: P3 (5)
+************ TEMPO 6 **************
+FILA: P1 (8) P2 (5)
 CPU: P3 (4)
+************ TEMPO 7 **************
+FILA: P1 (8) P2 (5)
+CPU: P3 (3)
+************ TEMPO 8 **************
+FILA: P1 (8) P2 (5)
+CPU: P3 (2)
+************ TEMPO 9 **************
+FILA: P1 (8) P2 (5)
+CPU: P3 (1)
+************ TEMPO 10 **************
+#[evento] ENCERRANDO <P3>
+FILA: P1 (8)
+CPU: P2 (5)
+************ TEMPO 11 **************
+FILA: P1 (8)
+CPU: P2 (4)
+************ TEMPO 12 **************
+FILA: P1 (8)
+CPU: P2 (3)
+************ TEMPO 13 **************
+FILA: P1 (8)
+CPU: P2 (2)
+************ TEMPO 14 **************
+FILA: P1 (8)
+CPU: P2 (1)
+************ TEMPO 15 **************
+#[evento] ENCERRANDO <P2>
+FILA: Nao ha processos na fila
+CPU: P1 (8)
+************ TEMPO 16 **************
+FILA: Nao ha processos na fila
+CPU: P1 (7)
 ************ TEMPO 17 **************
 FILA: Nao ha processos na fila
-CPU: P3 (3)
+CPU: P1 (6)
 ************ TEMPO 18 **************
 FILA: Nao ha processos na fila
-CPU: P3 (2)
+CPU: P1 (5)
 ************ TEMPO 19 **************
 FILA: Nao ha processos na fila
-CPU: P3 (1)
+CPU: P1 (4)
 ************ TEMPO 20 **************
-#[evento] ENCERRANDO <P3>
+FILA: Nao ha processos na fila
+CPU: P1 (3)
+************ TEMPO 21 **************
+FILA: Nao ha processos na fila
+CPU: P1 (2)
+************ TEMPO 22 **************
+FILA: Nao ha processos na fila
+CPU: P1 (1)
+************ TEMPO 23 **************
+#[evento] ENCERRANDO <P1>
 FILA: Nao ha processos na fila
 ACABARAM OS PROCESSOS!!!
 -----------------------------------
@@ -82,11 +88,11 @@ ACABARAM OS PROCESSOS!!!
 -----------------------------------
 ***********************************
 TEMPO DE ESPERA DE CADA PROCESSO:
-P1: 1
-P2: 5
-P3: 10
-P4: 2
+P1: 15
+P2: 10
+P3: 3
+P4: 0
 ***********************************
-TEMPO TOTAL DE ESPERA: 18
-MEDIA DE TEMPO DE ESPERA: 4.50
+TEMPO TOTAL DE ESPERA: 28
+MEDIA DE TEMPO DE ESPERA: 7.00
 ***********************************

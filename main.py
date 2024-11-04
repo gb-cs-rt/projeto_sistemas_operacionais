@@ -57,7 +57,11 @@ def main():
                 pid = partes[0]
                 chegada = int(partes[1])
                 duracao = int(partes[2])
-                io = list(map(int, partes[3].split(',')) if len(partes) > 3 else [])
+
+                if len(partes) > 3 and partes[3] != "-":
+                    io = list(map(int, partes[3].split(',')))
+                else:
+                    io = []
                 
                 if algoritmo == '3':
                     if len(partes) < 5:
