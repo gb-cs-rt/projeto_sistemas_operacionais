@@ -56,7 +56,7 @@ class EscalonadorFCFS:
                 arq.write(f'#[evento] OPERACAO I/O <{self.cpu.pid}>\n')
                 if self.cpu.duracao > 0:  # Só coloca na fila se o processo não tiver terminado
                     self.cpu.tempo_entrada_fila = self.tempo_atual
-                    self.chegada_Processo()
+                    # self.chegada_Processo()
                     self.fila_espera.append(self.cpu)
                 self.cpu = None
 
@@ -128,9 +128,9 @@ class EscalonadorFCFS:
             self.historico_execucao.append(self.cpu.pid if self.cpu else 'LIVRE')
             self.incrementar_Tempo_Decorrido()
             self.decrementar_Duracao()
+            self.chegada_Processo()
             self.verifica_IO()
             self.encerrar_Processo()
-            self.chegada_Processo()
             self.escalonar_Processo()
             self.print_Status()
         arq.write('-----------------------------------\n')
