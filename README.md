@@ -3,13 +3,13 @@
 Este projeto implementa um simulador de Escalonamento de Processos preemptivo para a disciplina de Sistemas Operacionais, com suporte a operações de I/O. O objetivo é simular o comportamento de processos em uma fila de espera, respeitando os algoritmos selecionados e lidando com interrupções de I/O.
 
 ## Principais Características
-- **Simulação de Escalonamento First Come First Served (FCFS)** com operações de I/O
-- **Simulação de Escalonamento Shortest job first** com operações de I/O
-- **Simulação de Escalonamento por Prioridade** com operações de I/O
-- **Simulação de Escalonamento Round-Robin** com operações de I/O
+- **Simulação de Escalonamento First Come First Served (FCFS)**
+- **Simulação de Escalonamento Shortest job first**
+- **Simulação de Escalonamento por Prioridade**
+- **Simulação de Escalonamento Round-Robin**
 - **Implementado em linguagens**: Python
 - **Saída de dados do escalonador** (saida.txt)
-- **Gráfico de Gantt gerado em arquivo** (grafico.txt)
+- **Diagrama de Gantt gerado em arquivo** (grafico.txt)
 - **Cálculo de tempo de espera** para cada processo e tempo médio de espera
 
 ## Primeiros Passos
@@ -37,7 +37,7 @@ Este projeto implementa um simulador de Escalonamento de Processos preemptivo pa
 - **Tempo de chegada**
 - **Duração**
 - **Instantes de operação de I/O** (opcional), separados por vírgulas
-- **Prioridade** (caso o escalonador esolhido seja o de Prioridade)
+- **Prioridade** (caso o escalonador escolhido seja o de Prioridade)
 
 ### Exemplos de arquivo de entrada para Escalonadores como FCFS, SJF e Round-Robin
 ```
@@ -77,6 +77,7 @@ P4 10 4 - 1
 ## Saída de Dados
 
 A saída de dados é gerada no arquivo `saida.txt` e contém as seguintes informações:
+
 - **Tempo da simulação**
 - **Possível evento do processo**
 - **Fila de espera**
@@ -88,6 +89,7 @@ A saída de dados é gerada no arquivo `saida.txt` e contém as seguintes inform
 ## Diagrama de Gantt
 
 O diagrama de Gantt é gerado no arquivo `grafico.txt` e contém as seguintes informações:
+
 - **Simulaçãoo de escalonamento**
 - **Tempo de espera de cada processo**
 - **Tempo total de espera**
