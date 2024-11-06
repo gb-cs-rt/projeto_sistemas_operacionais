@@ -96,6 +96,18 @@ O diagrama de Gantt é gerado no arquivo `grafico.txt` e contém as seguintes in
 - **Tempo total de espera**
 - **Tempo médio de espera**
 
+## Gráfico de Gantt
+
+O Gráfico de Gantt é gerado no arquivo `diagrama_gantt.png` e também exibido em tempo real. Contém as seguintes informações:
+
+- **Simulaçãoo de escalonamento em tempo real**
+
+## Gráfico de Tempo de espera por processo
+
+O Gráfico de tempo de espera por processo é gerado no arquivo `tempo_espera_por_processo.png` e contém as seguintes informações:
+
+- **Tempo de espera de cada processo**
+
 ## Membros
 - Cauan Sousa - 24.124.084-5  
 - Gustavo Baggio - 24.122.012-8  
