@@ -1,3 +1,6 @@
+import matplotlib.pyplot as plt
+import numpy as np
+
 class Processo:
 
     def __init__(self, pid, chegada, duracao, io=[]):

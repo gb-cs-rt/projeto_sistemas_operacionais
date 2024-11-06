@@ -16,11 +16,11 @@ class EscalonadorRR:
         self.historico_execucao = []
         self.arq = None
 
-    def adicionar_Processo(self, processo):
+    def adicionarProcesso(self, processo):
         self.fila_processos.append(processo)
         self.todos_processos.append(processo)
 
-    def escalonar_Processo(self):
+    def escalonarProcesso(self):
         if self.cpu is None and self.fila_espera:
             while self.fila_espera:
                 processo = self.fila_espera.pop(0)
@@ -30,48 +30,45 @@ class EscalonadorRR:
                     self.quantum_atual = 0
                     break
 
-    def chegada_Processo(self):
+    def chegadaProcesso(self):
         for processo in self.fila_processos[:]:
             if processo.chegada == self.tempo_atual:
                 self.arq.write(f'#[evento] CHEGADA <{processo.pid}>\n')
                 processo.tempo_entrada_fila = self.tempo_atual
                 self.fila_espera.append(processo)
                 
-    def incrementar_Tempo_Decorrido(self):
+    def incrementarTempoDecorrido(self):
         if self.cpu is not None:
             self.cpu.tempo_decorrido += 1
 
-    def decrementar_Duracao(self):
+    def decrementarDuracao(self):
         if self.cpu is not None:
             self.cpu.duracao -= 1
 
-    def verifica_IO(self):
+    def verificaIO(self):
         if self.cpu is not None:
             if self.cpu.tempo_decorrido in self.cpu.io:
                 self.arq.write(f'#[evento] OPERACAO I/O <{self.cpu.pid}>\n')
                 if self.cpu.duracao > 0:  # Só coloca na fila se o processo não tiver terminado
                     self.cpu.tempo_entrada_fila = self.tempo_atual
-                    # self.chegada_Processo()
                     self.fila_espera.append(self.cpu)
                 self.cpu = None
 
-    def encerrar_Processo(self):
+    def encerrarProcesso(self):
         if self.cpu is not None and self.cpu.duracao == 0:
             self.arq.write(f'#[evento] ENCERRANDO <{self.cpu.pid}>\n')
             self.fila_processos.remove(self.cpu)
             self.cpu = None
 
-    def verifica_Quantum(self):
+    def verificaQuantum(self):
         if self.cpu is not None:
             if self.quantum_atual == self.quantum:
                 self.arq.write(f'#[evento] FIM QUANTUM <{self.cpu.pid}>\n')
                 if self.cpu.duracao > 0:  # Só coloca na fila se o processo não tiver terminado
                     self.cpu.tempo_entrada_fila = self.tempo_atual
-                    # self.chegada_Processo()
                     self.fila_espera.append(self.cpu)
                 elif self.cpu.duracao == 0:
-                    self.encerrar_Processo()
-
+                    self.encerrarProcesso()
                 self.cpu = None
                 self.quantum_atual = 0
 
@@ -85,8 +82,8 @@ class EscalonadorRR:
         self.arq.write(f'************ TEMPO {self.tempo_atual} **************\n')
         self.arq.write('FILA: Nao ha processos na fila\n')
 
-        self.chegada_Processo()
-        self.escalonar_Processo()
+        self.chegadaProcesso()
+        self.escalonarProcesso()
         self.arq.write(f'CPU: {self.cpu.pid} ({self.cpu.duracao})\n')
 
         while self.cpu or self.fila_espera or self.fila_processos:
@@ -94,13 +91,13 @@ class EscalonadorRR:
             self.quantum_atual += 1
             self.arq.write(f'************ TEMPO {self.tempo_atual} **************\n')
             self.historico_execucao.append(self.cpu.pid if self.cpu else 'LIVRE')
-            self.incrementar_Tempo_Decorrido()
-            self.decrementar_Duracao()
-            self.chegada_Processo()
-            self.verifica_Quantum()
-            self.verifica_IO()
-            self.encerrar_Processo()
-            self.escalonar_Processo()
+            self.incrementarTempoDecorrido()
+            self.decrementarDuracao()
+            self.chegadaProcesso()
+            self.verificaQuantum()
+            self.verificaIO()
+            self.encerrarProcesso()
+            self.escalonarProcesso()
             printStatus(self)
 
         self.arq.write('-----------------------------------\n')

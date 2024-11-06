@@ -12,11 +12,11 @@ class EscalonadorSJF:
         self.historico_execucao = []
         self.processo_em_io = None  # Guardar o processo que saiu para I/O
 
-    def adicionar_Processo(self, processo):
+    def adicionarProcesso(self, processo):
         self.fila_processos.append(processo)
         self.todos_processos.append(processo)
 
-    def escalonar_Processo(self):
+    def escalonarProcesso(self):
         # Se a CPU está vazia e há processos na fila de espera
         if self.cpu is None and self.fila_espera:
             # Seleciona o processo de menor duração que não seja o que acabou de sair para I/O
@@ -32,22 +32,22 @@ class EscalonadorSJF:
                     break
             self.processo_em_io = None  # Libera o processo após o ciclo
 
-    def chegada_Processo(self):
+    def chegadaProcesso(self):
         for processo in self.fila_processos[:]:
             if processo.chegada == self.tempo_atual:
                 self.arq.write(f'#[evento] CHEGADA <{processo.pid}>\n')
                 processo.tempo_entrada_fila = self.tempo_atual
                 self.fila_espera.append(processo)
 
-    def incrementar_Tempo_Decorrido(self):
+    def incrementarTempoDecorrido(self):
         if self.cpu:
             self.cpu.tempo_decorrido += 1
 
-    def decrementar_Duracao(self):
+    def decrementarDuracao(self):
         if self.cpu:
             self.cpu.duracao -= 1
 
-    def verifica_IO(self):
+    def verificaIO(self):
         if self.cpu is not None:
             if self.cpu.tempo_decorrido in self.cpu.io:
                 self.arq.write(f'#[evento] OPERACAO I/O <{self.cpu.pid}>\n')
@@ -56,9 +56,9 @@ class EscalonadorSJF:
                     self.fila_espera.append(self.cpu)
                     self.processo_em_io = self.cpu  # Marca o processo que acabou de sair
                 self.cpu = None  # Libera a CPU
-                self.escalonar_Processo()
+                self.escalonarProcesso()
 
-    def encerrar_Processo(self):
+    def encerrarProcesso(self):
         if self.cpu is not None and self.cpu.duracao == 0:
             self.arq.write(f'#[evento] ENCERRANDO <{self.cpu.pid}>\n')
             self.fila_processos.remove(self.cpu)
@@ -74,20 +74,20 @@ class EscalonadorSJF:
         self.arq.write(f'************ TEMPO {self.tempo_atual} **************\n')
         self.arq.write('FILA: Nao ha processos na fila\n')
 
-        self.chegada_Processo()
-        self.escalonar_Processo()
+        self.chegadaProcesso()
+        self.escalonarProcesso()
         self.arq.write(f'CPU: {self.cpu.pid} ({self.cpu.duracao})\n')
 
         while self.cpu or self.fila_espera or self.fila_processos:
             self.tempo_atual += 1
             self.arq.write(f'************ TEMPO {self.tempo_atual} **************\n')
             self.historico_execucao.append(self.cpu.pid if self.cpu else 'LIVRE')
-            self.incrementar_Tempo_Decorrido()
-            self.decrementar_Duracao()
-            self.chegada_Processo()
-            self.verifica_IO()
-            self.encerrar_Processo()
-            self.escalonar_Processo()
+            self.incrementarTempoDecorrido()
+            self.decrementarDuracao()
+            self.chegadaProcesso()
+            self.verificaIO()
+            self.encerrarProcesso()
+            self.escalonarProcesso()
             printStatus(self)
             
         self.arq.write('-----------------------------------\n')

@@ -72,7 +72,7 @@ def main():
                 else:
                     processo = Processo(pid, chegada, duracao, io)
 
-                escalonador.adicionar_Processo(processo)
+                escalonador.adicionarProcesso(processo)
             arq.close()
 
             try:
