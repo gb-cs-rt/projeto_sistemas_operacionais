@@ -3,10 +3,10 @@
 Este projeto implementa um simulador de Escalonamento de Processos preemptivo para a disciplina de Sistemas Operacionais, com suporte a operações de I/O. O objetivo é simular o comportamento de processos em uma fila de espera, respeitando os algoritmos selecionados e lidando com interrupções de I/O.
 
 ## Principais Características
-- **Simulação de Escalonamento First Come First Served (FCFS)**
-- **Simulação de Escalonamento Shortest job first**
-- **Simulação de Escalonamento por Prioridade**
-- **Simulação de Escalonamento Round-Robin**
+- **Simulação de Escalonamento First Come First Served (FCFS)** - Obedece a ordem de chegada dos processos.
+- **Simulação de Escalonamento Shortest job first** - Seleciona o processo que terá o menor surto de CPU.
+- **Simulação de Escalonamento por Prioridade** - Seleciona o processo com maior prioridade para alocar na CPU.
+- **Simulação de Escalonamento Round-Robin** - Cada processo recebe uma pequena parcela de tempo de CPU, depois desse tempo o processo é preemptado e adicionado ao fim da fila de espera.
 - **Implementado em linguagens**: Python
 - **Saída de dados do escalonador** (saida.txt)
 - **Diagrama de Gantt gerado em arquivo** (grafico.txt)
