@@ -1,4 +1,5 @@
-from utils import printStatus, gerarDiagramaGantt
+from src.utils import printStatus, gerarDiagramaGantt, gerarGraficos, criaDiretorioSaida
+import time
 
 class EscalonadorSJF:
 
@@ -10,7 +11,8 @@ class EscalonadorSJF:
         self.fila_processos = []
         self.todos_processos = []
         self.historico_execucao = []
-        self.processo_em_io = None  # Guardar o processo que saiu para I/O
+        self.processo_em_io = None
+        self.arq = None
 
     def adicionarProcesso(self, processo):
         self.fila_processos.append(processo)
@@ -65,7 +67,8 @@ class EscalonadorSJF:
             self.cpu = None
 
     def executar(self):
-        self.arq = open('saida.txt', 'w')
+        criaDiretorioSaida()
+        self.arq = open('output/saida.txt', 'w')
         self.arq.write('***********************************\n')
         self.arq.write('***** SHORTEST JOB FIRST *****\n')
         self.arq.write('-----------------------------------\n')
@@ -85,16 +88,19 @@ class EscalonadorSJF:
             self.incrementarTempoDecorrido()
             self.decrementarDuracao()
             self.chegadaProcesso()
-            self.verificaIO()
             self.encerrarProcesso()
+            self.verificaIO()
             self.escalonarProcesso()
             printStatus(self)
+            gerarGraficos(self)
+            time.sleep(0.5)
             
         self.arq.write('-----------------------------------\n')
         self.arq.write('------- SIMULACAO FINALIZADA ------\n')
         self.arq.write('-----------------------------------\n')
 
         gerarDiagramaGantt(self)
+        gerarGraficos(self)
         self.arq.close()
 
         print('\nSimulação SJF concluída. Resultados no arquivo "saida.txt". Gráficos no arquivo "grafico.txt".\n')

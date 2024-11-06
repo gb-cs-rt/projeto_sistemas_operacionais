@@ -1,8 +1,8 @@
-from escalonador_FCFS import EscalonadorFCFS
-from escalonador_SJF import EscalonadorSJF
-from escalonador_PRIORIDADE import EscalonadorPrioridade
-from escalonador_RR import EscalonadorRR
-from utils import Processo, ProcessoPrioridade
+from src.escalonador_FCFS import EscalonadorFCFS
+from src.escalonador_SJF import EscalonadorSJF
+from src.escalonador_PRIORIDADE import EscalonadorPrioridade
+from src.escalonador_RR import EscalonadorRR
+from src.utils import Processo, ProcessoPrioridade
 import os, time, sys
 
 def clear():

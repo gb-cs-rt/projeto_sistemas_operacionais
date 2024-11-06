@@ -51,7 +51,7 @@ P5 17 2
 P1 0 6 2
 P2 1 5 1
 P3 5 5 1
-P4 10 4
+P4 10 4 0
 ```
 
 ### Exemplo de arquivo de entrada para Escalonador por Prioridade

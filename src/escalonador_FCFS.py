@@ -1,14 +1,10 @@
-# Um número de prioridade é associado com cada processo
-# • A CPU é alocada para o processo com maior prioridade
-# SJF é um escalonador com prioridade
-# • a prioridade é a previsão da próxima CPU burst
+from src.utils import printStatus, gerarDiagramaGantt, gerarGraficos, criaDiretorioSaida
+import time
 
-from utils import printStatus, gerarDiagramaGantt
-
-class EscalonadorPrioridade:
+class EscalonadorFCFS:
 
     def __init__(self):
-        self.tipo = 'Prioridade'
+        self.tipo = 'FCFS'
         self.cpu = None
         self.fila_espera = []
         self.tempo_atual = 0
@@ -17,16 +13,8 @@ class EscalonadorPrioridade:
         self.fila_processos = []
         self.todos_processos = []
         self.historico_execucao = []
+        self.saida_eventos = []
         self.arq = None
-
-    def verificaPrioridade(self):
-        maior_prioridade = min(processo.prioridade for processo in self.fila_espera)
-        for processo in self.fila_espera[:]:
-            if processo.prioridade == maior_prioridade:
-                self.cpu = processo
-                self.cpu.tempo_espera_total += self.tempo_atual - self.cpu.tempo_entrada_fila
-                self.fila_espera.remove(processo)
-                break
 
     def adicionarProcesso(self, processo):
         self.fila_processos.append(processo)
@@ -34,7 +22,12 @@ class EscalonadorPrioridade:
 
     def escalonarProcesso(self):
         if self.cpu is None and self.fila_espera:
-            self.verificaPrioridade()
+            while self.fila_espera:
+                processo = self.fila_espera.pop(0)
+                if processo.duracao > 0:  # Só escalona se a duração for maior que 0
+                    self.cpu = processo
+                    self.cpu.tempo_espera_total += self.tempo_atual - self.cpu.tempo_entrada_fila
+                    break
 
     def chegadaProcesso(self):
         for processo in self.fila_processos[:]:
@@ -55,11 +48,11 @@ class EscalonadorPrioridade:
         if self.cpu is not None:
             if self.cpu.tempo_decorrido in self.cpu.io:
                 self.arq.write(f'#[evento] OPERACAO I/O <{self.cpu.pid}>\n')
-                if self.cpu.duracao > 0:
+                if self.cpu.duracao > 0:  # Só coloca na fila se o processo não tiver terminado
                     self.cpu.tempo_entrada_fila = self.tempo_atual
+                    # self.chegada_Processo()
                     self.fila_espera.append(self.cpu)
                 self.cpu = None
-                self.escalonarProcesso()
 
     def encerrarProcesso(self):
         if self.cpu is not None and self.cpu.duracao == 0:
@@ -68,9 +61,10 @@ class EscalonadorPrioridade:
             self.cpu = None
 
     def executar(self):
-        self.arq = open('saida.txt', 'w')
+        criaDiretorioSaida()
+        self.arq = open('output/saida.txt', 'w')
         self.arq.write('***********************************\n')
-        self.arq.write('***** ESCALONADOR PRIORIDADE *****\n')
+        self.arq.write('***** FIRST COME FIRST SERVED *****\n')
         self.arq.write('-----------------------------------\n')
         self.arq.write('------- INICIANDO SIMULACAO -------\n')
         self.arq.write('-----------------------------------\n')
@@ -88,16 +82,19 @@ class EscalonadorPrioridade:
             self.incrementarTempoDecorrido()
             self.decrementarDuracao()
             self.chegadaProcesso()
-            self.verificaIO()
             self.encerrarProcesso()
+            self.verificaIO()
             self.escalonarProcesso()
             printStatus(self)
-
+            gerarGraficos(self)
+            time.sleep(0.5)
+        
         self.arq.write('-----------------------------------\n')
         self.arq.write('------- SIMULACAO FINALIZADA ------\n')
         self.arq.write('-----------------------------------\n')
 
         gerarDiagramaGantt(self)
+        gerarGraficos(self)
         self.arq.close()
 
-        print('\nSimulação por prioridade concluída. Resultados no arquivo "saida.txt". Gráficos no arquivo "grafico.txt".\n')
+        print('\nSimulação FCFS concluída. Resultados no arquivo "saida.txt". Gráficos no arquivo "grafico.txt".\n')
