@@ -21,6 +21,7 @@ Este projeto implementa um simulador de Escalonamento de Processos preemptivo pa
 ### Pré-requisitos
 - **Python**
 - **Git** para clonar o repositório
+- **Matplotlib**
 
 ### Instalação
 1. Clone o repositório:
